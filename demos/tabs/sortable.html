@@ -1,25 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>jQuery UI Tabs - Sortable</title>
-	<link type="text/css" href="../../themes/base/jquery.ui.all.css" rel="stylesheet" />
-	<script type="text/javascript" src="../../jquery-1.4.2.js"></script>
-	<script type="text/javascript" src="../../ui/jquery.ui.core.js"></script>
-	<script type="text/javascript" src="../../ui/jquery.ui.widget.js"></script>
-	<script type="text/javascript" src="../../ui/jquery.ui.mouse.js"></script>
-	<script type="text/javascript" src="../../ui/jquery.ui.sortable.js"></script>
-	<script type="text/javascript" src="../../ui/jquery.ui.tabs.js"></script>
-	<link type="text/css" href="../demos.css" rel="stylesheet" />
-	<script type="text/javascript">
-	$(function() {
-		$("#tabs").tabs().find(".ui-tabs-nav").sortable({axis:'x'});
-	});
+	<link rel="stylesheet" href="../../themes/base/all.css">
+	<link rel="stylesheet" href="../demos.css">
+	<script src="../../external/requirejs/require.js"></script>
+	<script src="../bootstrap.js" data-modules="sortable">
+		var tabs = $( "#tabs" ).tabs();
+		var previouslyFocused = false;
+
+		tabs.find( ".ui-tabs-nav" ).sortable({
+			axis: "x",
+
+			// Sortable removes focus, so we need to restore it if the tab was focused
+			// prior to sorting
+			start: function(event, ui) {
+				previouslyFocused = document.activeElement === ui.item[ 0 ];
+			},
+			stop: function(event, ui) {
+				tabs.tabs( "refresh" );
+				if (previouslyFocused) {
+					ui.item.trigger( "focus" );
+				}
+			}
+		});
 	</script>
 </head>
 <body>
-
-<div class="demo">
 
 <div id="tabs">
 	<ul>
@@ -39,27 +48,9 @@
 	</div>
 </div>
 
-</div><!-- End demo -->
-
 <div class="demo-description">
-
-<p>
-Drag the tabs above to re-order them.
-<p>
-
-<p>
-Making tabs sortable is as simple as calling
-
-<code>.sortable()</code>
-
-on the
-
-<code>.ui-tabs-nav</code>
-
-element.
-</p>
-
-</div><!-- End demo-description -->
-
+<p>Drag the tabs above to re-order them.</p>
+<p>Making tabs sortable is as simple as calling <code>.sortable()</code> on the <code>.ui-tabs-nav</code> element.</p>
+</div>
 </body>
 </html>

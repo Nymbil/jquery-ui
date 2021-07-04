@@ -1,7 +1,5 @@
-build/dist
-docs
-.project
-*~
-*.diff
-*.patch
-.DS_Store
+dist
+bower_components
+node_modules
+.sizecache.json
+package-lock.json
